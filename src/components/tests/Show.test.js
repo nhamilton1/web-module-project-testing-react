@@ -10,39 +10,16 @@ const testShow = {
     summary: 'testing the summary text',
     seasons: [
         {
-            episodes: [
-                {        
-                id: 0,
-                image: null,
-                name: "episode 0",
-                number: 0,
-                runtime: 0,
-                season: 0,
-                summary: "this is a test summary.",
-                type: "regular",
-            }
-            ],
             id: 0,
             name: 'season 0',
+            episodes: [],
         },
         {
-            episodes: [
-                {        
-                    id: 1,
-                    image: null,
-                    name: "episode 1",
-                    number: 1,
-                    runtime: 1,
-                    season: 1,
-                    summary: "this is a test summary.",
-                    type: "regular",
-                }
-            ],
             id: 1,
             name: 'season 1',
+            episodes: [],
         },
-        { id: 2, name: "season 2", episodes: [] },
-        { id: 3, name: "season 3", episodes: [] },
+
     ],
 }
 
@@ -71,7 +48,7 @@ test('renders same number of options seasons are passed in', ()=>{
     const selectSeasons = screen.queryAllByTestId('season-option')
         
     //3 ASSERT
-    expect(selectSeasons.length).toBe(4)
+    expect(selectSeasons.length).toBe(2)
 });
 
 test('handleSelect is called when an season is selected', () => {
@@ -100,13 +77,11 @@ test('component renders when no seasons are selected and when rerenders with a s
 
 
     //1 ARRANGE
-    rerender(<Show show={testShow} selectedSeason={2} />)
+    rerender(<Show show={testShow} selectedSeason={1} />)
     //2 ACT
     episodesComp = screen.queryByTestId('episodes-container')
     //3 ASSERT
     expect(episodesComp).toBeInTheDocument()
-
-
 
 });
 
