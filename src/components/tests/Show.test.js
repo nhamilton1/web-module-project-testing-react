@@ -6,21 +6,83 @@ import Show from './../Show';
 
 const testShow = {
     //add in approprate test data structure here.
+    name: 'Test 0',
+    summary: 'testing the summary text',
+    seasons: [
+        {
+            id: 0,
+            name: 'season 0',
+            episodes: [],
+        },
+        {
+            id: 1,
+            name: 'season 1',
+            episodes: [],
+        },
+
+    ],
 }
 
 test('renders testShow and no selected Season without errors', ()=>{
+    //1 ARRANGE
+    render(<Show show={testShow} selectedSeason='none'/>)
+
 });
 
 test('renders Loading component when prop show is null', () => {
+    //1 ARRANGE
+    render(<Show show={null} selectedSeason='none'/>)
+
+    //2 ACT
+    const loadingComponent = screen.queryByTestId('loading-container')
+    
+    //3 ASSERT
+    expect(loadingComponent).toBeInTheDocument()
 });
 
 test('renders same number of options seasons are passed in', ()=>{
+    //1 ARRANGE
+    render(<Show show={testShow} selectedSeason='none'/>)
+
+    //2 ACT
+    const selectSeasons = screen.queryAllByTestId('season-option')
+        
+    //3 ASSERT
+    expect(selectSeasons.length).toBe(2)
 });
 
 test('handleSelect is called when an season is selected', () => {
+    const mockHandleSelect = jest.fn()
+
+    //1 ARRANGE
+    render(<Show show={testShow} selectedSeason='1' handleSelect={mockHandleSelect}/>)
+    
+    //2 ACT
+    const select = screen.getByLabelText(/select a season/i)
+    userEvent.selectOptions(select, ['0'])
+
+    //3 ASSERT
+    expect(mockHandleSelect).toBeCalled()
+
 });
 
 test('component renders when no seasons are selected and when rerenders with a season passed in', () => {
+    //1 ARRANGE
+    const { rerender } = render(<Show show={testShow} selectedSeason={'none'} />)
+    //2 ACT
+    let episodesComp = screen.queryByTestId('episodes-container')
+    //3 ASSERT
+    expect(episodesComp).not.toBeInTheDocument()
+
+
+
+    //1 ARRANGE
+    rerender(<Show show={testShow} selectedSeason={1} />)
+    //2 ACT
+    episodesComp = screen.queryByTestId('episodes-container')
+    //3 ASSERT
+    expect(episodesComp).toBeInTheDocument()
+
 });
 
 //Tasks:
